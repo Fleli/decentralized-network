@@ -67,6 +67,24 @@ class Terminal:
                     
                     print(f"Loaded root key '{record.name}' with ref {record.storage_ref}.")
                     continue
+
+                if command.startswith("nullifier "):
+                    service_id_hex = command.removeprefix("nullifier ").strip()
+                    if not service_id_hex:
+                        print("Usage: nullifier <service_id_hex>")
+                        continue
+
+                    try:
+                        nullifier = self.node.compute_service_nullifier(service_id_hex)
+                    except RuntimeError as exc:
+                        print(str(exc))
+                        continue
+                    except ValueError as exc:
+                        print(str(exc))
+                        continue
+
+                    print(nullifier.hex())
+                    continue
                 
                 print(f"Unknown command: {command}")
         finally:
