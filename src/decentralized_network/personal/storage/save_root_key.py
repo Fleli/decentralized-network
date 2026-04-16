@@ -1,10 +1,14 @@
 import json
+from datetime import datetime
 from pathlib import Path
 
 from decentralized_network import config
 
 
-def save_root_key(root_key: bytes) -> int:
+def save_root_key(name: str, root_key: bytes, created_at: datetime) -> int:
+    if not name:
+        raise ValueError("Root key name must not be empty.")
+
     if not root_key:
         raise ValueError("Root key must not be empty.")
 
@@ -25,7 +29,11 @@ def save_root_key(root_key: bytes) -> int:
             f"{config.ROOT_KEY_NAME}{storage_ref}{config.ROOT_KEY_EXTENSION}"
         )
 
-    payload = {"root_key_hex": root_key.hex()}
+    payload = {
+        "name": name,
+        "created_at": created_at.isoformat(),
+        "root_key_hex": root_key.hex(),
+    }
     root_key_path.write_text(json.dumps(payload), encoding="utf-8")
 
     return storage_ref
