@@ -4,7 +4,15 @@ from asyncio import AbstractServer, StreamReader, StreamWriter
 
 from decentralized_network import config
 from decentralized_network.personal import RootKeyRecord
-from decentralized_network.personal import create_named_root_key, fetch_root_key
+from decentralized_network.personal import (
+    create_named_root_key,
+    fetch_root_key,
+    fetch_root_secret,
+)
+from decentralized_network.services import (
+    compute_service_nullifier,
+    derive_service_nullifier_secret,
+)
 
 class Node:
     
@@ -54,6 +62,15 @@ class Node:
     def load_root_key(self, ref: int) -> RootKeyRecord | None:
         self._root_key_record = fetch_root_key(ref)
         return self.root_key_record
+
+    def compute_service_nullifier(self, service_id_hex: str) -> bytes:
+        if self._root_key_record is None:
+            raise RuntimeError("No root key is currently loaded.")
+
+        root_secret = fetch_root_secret(self._root_key_record.storage_ref)
+        domain_secret = derive_service_nullifier_secret(root_secret)
+
+        return compute_service_nullifier(domain_secret, service_id_hex)
     
     def clear_root_key_record(self) -> None:
         self._root_key_record = None

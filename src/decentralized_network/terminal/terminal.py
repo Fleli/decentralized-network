@@ -14,11 +14,18 @@ class Terminal:
     
     
     async def run(self) -> None:
+        
+        print("\nStarting node ...")
+        
         await self.node.start()
+        
         address = self.node.listening_address()
+        
         if address is not None:
             print(f"Node listening on {address[0]}:{address[1]}")
-
+        
+        print("")
+        
         try:
             while True:
                 command = await asyncio.to_thread(input, config.TERMINAL_PROMPT)
@@ -63,4 +70,5 @@ class Terminal:
                 
                 print(f"Unknown command: {command}")
         finally:
+            print("\nStopping node gracefully ...\n")
             await self.node.stop()
