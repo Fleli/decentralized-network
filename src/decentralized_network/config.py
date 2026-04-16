@@ -3,6 +3,10 @@
 
 DEFAULT_ROOT_KEY_BYTES = 32
 
+# ----- Terminal Preferences -----
+
+TERMINAL_PROMPT="p2p> "
+
 # ----- During development -----
 
 ROOT_KEY_PATH="./.secrets/root_keys/"
