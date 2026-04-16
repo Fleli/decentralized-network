@@ -1,6 +1,6 @@
 
 from decentralized_network.personal import RootKeyRecord
-from decentralized_network.personal import fetch_root_key
+from decentralized_network.personal import create_named_root_key, fetch_root_key
 
 class Node:
     
@@ -12,6 +12,9 @@ class Node:
     @property
     def root_key_record(self) -> RootKeyRecord | None:
         return self._root_key_record
+
+    def create_named_root_key(self, name: str) -> RootKeyRecord:
+        return create_named_root_key(name)
     
     def load_root_key(self, ref: int) -> RootKeyRecord | None:
         self._root_key_record = fetch_root_key(ref)
