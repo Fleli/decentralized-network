@@ -7,6 +7,11 @@ DEFAULT_ROOT_KEY_BYTES = 32
 
 TERMINAL_PROMPT="p2p> "
 
+# ----- Node Networking -----
+
+NODE_HOST="0.0.0.0"
+NODE_PORT=9000
+
 # ----- During development -----
 
 ROOT_KEY_PATH="./.secrets/root_keys/"
